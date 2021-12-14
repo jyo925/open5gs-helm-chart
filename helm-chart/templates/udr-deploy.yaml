@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: open5gs-udr
+  name: {{ .Release.Name }}-udr
   labels:
     epc-mode: udr
 spec:
@@ -15,7 +15,7 @@ spec:
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
-  name: open5gs-udr-deployment
+  name: {{ .Release.Name }}-udr-deployment
   labels:
     epc-mode: udr
 spec:
@@ -34,10 +34,10 @@ spec:
           imagePullPolicy: {{ .Values.open5gs.image.pullPolicy }}
           command: ["open5gs-udrd", "-c", "/open5gs/config-map/udr.yaml"]
           volumeMounts:
-          - name: open5gs-udr-config
+          - name: {{ .Release.Name }}-udr-config
             mountPath: /open5gs/config-map/udr.yaml
             subPath: "udr.yaml"          
       volumes:
-        - name: open5gs-udr-config
+        - name: {{ .Release.Name }}-udr-config
           configMap:
-            name: open5gs-udr-config
+            name: {{ .Release.Name }}-udr-config

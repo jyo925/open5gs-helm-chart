@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: open5gs-udm-config
+  name: {{ .Release.Name }}-udm-config
   labels:
     epc-mode: udm
 data:
@@ -12,7 +12,7 @@ data:
     udm:
       sbi:   
       - addr: 0.0.0.0
-        advertise: open5gs-udm
+        advertise: {{ .Release.Name }}-udm
     nrf:
      sbi:
-      name: open5gs-nrf
+      name: {{ .Release.Name }}-nrf

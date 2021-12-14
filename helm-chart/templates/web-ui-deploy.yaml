@@ -2,7 +2,7 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ include "open5gs.fullname" . }}-webui
+  name: {{ .Release.Name }}-webui
   labels:
 {{ include "open5gs.labels.standard" . | indent 4 }}  
     app.kubernetes.io/component: webui
@@ -47,7 +47,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: open5gs-webui
+  name: {{ .Release.Name }}-webui
   labels:
     epc-mode: webui
 spec:
@@ -61,7 +61,7 @@ spec:
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
-  name: open5gs-webui 
+  name: {{ .Release.Name }}-webui 
   labels:
     epc-mode: webui
 spec:
@@ -80,8 +80,8 @@ spec:
         image: "{{ .Values.webui.image.repository }}:{{ .Values.webui.image.tag }}"      
         env:
         - name: DB_URI
-          value: mongodb://{{ .Chart.Name }}-mongodb-svc/open5gs
+          value: mongodb://{{ .Release.Name }}-mongodb-svc/open5gs
         - name: NODE_ENV
           value: "production"  
         - name: HOSTNAME
-          value: '0.0.0.0'               
+          value: '0.0.0.0'

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: open5gs-ausf-config
+  name: {{ .Release.Name }}-ausf-config
   labels:
     epc-mode: ausf
 data:
@@ -12,7 +12,7 @@ data:
     ausf:
       sbi:
       - addr: 0.0.0.0
-        advertise: open5gs-ausf
+        advertise: {{ .Release.Name }}-ausf
     nrf:
      sbi:
-      name: open5gs-nrf
+      name: {{ .Release.Name }}-nrf

@@ -17,7 +17,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: open5gs-amf
+  name: {{ .Release.Name }}-amf
   labels:
     epc-mode: amf
 spec:
@@ -31,7 +31,7 @@ spec:
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
-  name: open5gs-amf-deployment
+  name: {{ .Release.Name }}-amf-deployment
   labels:
     epc-mode: amf
 spec:
@@ -50,10 +50,10 @@ spec:
           imagePullPolicy: {{ .Values.open5gs.image.pullPolicy }}
           command: ["open5gs-amfd", "-c", "/open5gs/config-map/amf.yaml"]
           volumeMounts:
-          - name: open5gs-amf-config
+          - name: {{ .Release.Name }}-amf-config
             mountPath: /open5gs/config-map/amf.yaml
             subPath: "amf.yaml"
       volumes:
-        - name: open5gs-amf-config
+        - name: {{ .Release.Name }}-amf-config
           configMap:
-            name: open5gs-amf-config
+            name: {{ .Release.Name }}-amf-config

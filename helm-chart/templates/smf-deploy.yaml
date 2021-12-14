@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: open5gs-smf
+  name: {{ .Release.Name }}-smf
   labels:
     epc-mode: smf
 spec:
@@ -15,7 +15,7 @@ spec:
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
-  name: open5gs-smf-deployment
+  name: {{ .Release.Name }}-smf-deployment
   labels:
     epc-mode: smf
 spec:
@@ -36,10 +36,10 @@ spec:
         args:
         - open5gs-smfd -c /open5gs/config-map/smf.yaml;
         volumeMounts:
-          - name: open5gs-smf-config
+          - name: {{ .Release.Name }}-smf-config
             mountPath: /open5gs/config-map/smf.yaml
             subPath: "smf.yaml"                                       
       volumes:
-        - name: open5gs-smf-config
+        - name: {{ .Release.Name }}-smf-config
           configMap:
-            name: open5gs-smf-config                
+            name: {{ .Release.Name }}-smf-config                

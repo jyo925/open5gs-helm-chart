@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: open5gs-nrf-config
+  name: {{ .Release.Name }}-nrf-config
   labels:
     epc-mode: nrf
 data:

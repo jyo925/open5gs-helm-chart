@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: open5gs-amf-config
+  name: {{ .Release.Name }}-amf-config
   labels:
     epc-mode: amf
 data:
@@ -14,7 +14,7 @@ data:
     amf:
         sbi:
         - addr: 0.0.0.0
-          advertise: open5gs-amf
+          advertise: {{ .Release.Name }}-amf
         ngap:
           dev: {{ .Values.k8s.interface }}
         guami:
@@ -45,4 +45,4 @@ data:
 
     nrf:
      sbi:
-       name: open5gs-nrf         
+       name: {{ .Release.Name }}-nrf

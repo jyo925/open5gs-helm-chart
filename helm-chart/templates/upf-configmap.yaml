@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: open5gs-upf-config
+  name: {{ .Release.Name }}-upf-config
   labels:
     epc-mode: upf
 data:
