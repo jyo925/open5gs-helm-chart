@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongodb-svc
+  name: {{ .Chart.Name }}-mongodb-svc
 spec:
   ports:
   - port: 27017
@@ -11,7 +11,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: open5gs-mongodb
+  name: {{ .Chart.Name }}-open5gs-mongodb
 spec:
   selector:
     matchLabels:
@@ -33,12 +33,12 @@ spec:
       volumes:
       - name: mongodb-persistent-storage
         persistentVolumeClaim:
-          claimName: mongodb-pv-claim
+          claimName: {{ .Chart.Name }}-mongodb-pv-claim
 ---
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: mongodb-pv-volume
+  name: {{ .Chart.Name }}-mongodb-pv-volume
   labels:
     type: local
 spec:
@@ -52,7 +52,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mongodb-pv-claim
+  name: {{ .Chart.Name }}-mongodb-pv-claim
 spec:
   accessModes:
     - ReadWriteOnce

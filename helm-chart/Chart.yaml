@@ -1,5 +1,5 @@
 apiVersion: v2
-name: open5gs-5gcore-helm
+name: open5gs
 description: A Helm chart for open5gs 5G Core
 
 # A chart can be either an 'application' or a 'library' chart.
