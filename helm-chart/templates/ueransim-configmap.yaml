@@ -48,7 +48,6 @@ data:
         apn: {{ .Values.dnn }}
         slice:
           sst: {{ .Values.config.sst }}
-          sd: {{ .Values.config.sd }}
         emergency: false
     
     # Configured NSSAI for this UE by HPLMN
