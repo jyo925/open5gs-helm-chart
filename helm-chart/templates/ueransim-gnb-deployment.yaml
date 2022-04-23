@@ -1,0 +1,52 @@
+apiVersion: apps/v1 # for tags before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}-gnb  
+  labels:
+    app: ueransim-gnb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ueransim-gnb
+  template:
+    metadata:
+      labels:
+        mode: simulator
+        app: ueransim-gnb     
+      annotations:
+        "cni.projectcalico.org/ipAddrs": "[\"{{ .Values.config.GnbIP }}\"]"      
+    spec:
+      serviceAccountName: {{ .Release.Name }}-k8s-wait-for
+      {{- if .Values.nodeSelector}}
+      nodeSelector: {{- .Values.nodeSelector | toYaml | nindent 8 }}
+      {{- end }}
+      initContainers:      
+      - name: wait-for-amf
+        image: "{{ .Values.k8swait.repository }}:{{ .Values.k8swait.tag }}"
+        imagePullPolicy: {{ .Values.k8swait.pullPolicy }}
+        args:
+          - "pod"
+          - "-lepc-mode=amf"      
+      containers:
+      - name: ueransim-gnb
+        image: "{{ .Values.ueransim.repository }}:{{ .Values.ueransim.tag }}"
+        imagePullPolicy: {{ .Values.ueransim.pullPolicy }}        
+        command: ["/bin/sh", "-c"]
+        args:
+        - sleep 10;
+          apt-get update && apt-get install iputils-ping iproute2 -y;          
+          ./nr-gnb -c open5gs-gnb.yaml;
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: ueransim-gnb-config
+          mountPath: /UERANSIM/build/open5gs-gnb.yaml
+          subPath: open5gs-gnb.yaml             
+      volumes:
+        - name: ueransim-gnb-config
+          configMap:
+            name: ueransim-config
+      {{- if .Values.nodeSelector}}
+      nodeSelector: {{- .Values.nodeSelector | toYaml | nindent 8 }}
+      {{- end }}           

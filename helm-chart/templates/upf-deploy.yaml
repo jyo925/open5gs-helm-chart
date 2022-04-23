@@ -27,6 +27,7 @@ spec:
     metadata:
       annotations:
         linkerd.io/inject: disabled
+        "cni.projectcalico.org/ipAddrs": "[\"{{ .Values.config.upfIP }}\"]" 
       labels:
         epc-mode: upf
     spec:   

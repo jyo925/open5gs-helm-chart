@@ -19,20 +19,20 @@ data:
           dev: {{ .Values.k8s.interface }}
         guami:
           - plmn_id:
-              mcc: {{ .Values.amf.mcc }}
-              mnc: {{ .Values.amf.mnc }}
+              mcc: {{ .Values.config.mcc }}
+              mnc: {{ .Values.config.mnc }}
             amf_id:
               region: 2
               set: 1
         tai:
           - plmn_id:
-              mcc: {{ .Values.amf.mcc }}
-              mnc: {{ .Values.amf.mnc }}
-            tac: {{ .Values.amf.tac }}
+              mcc: {{ .Values.config.mcc }}
+              mnc: {{ .Values.config.mnc }}
+            tac: {{ .Values.config.tac }}
         plmn_support:
         - plmn_id:
-            mcc: {{ .Values.amf.mcc }}
-            mnc: {{ .Values.amf.mnc }}
+            mcc: {{ .Values.config.mcc }}
+            mnc: {{ .Values.config.mnc }}
           s_nssai:
           - sst: 1
             sd: 1

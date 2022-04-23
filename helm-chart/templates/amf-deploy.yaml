@@ -41,6 +41,8 @@ spec:
       epc-mode: amf
   template:
     metadata:
+      annotations:
+        "cni.projectcalico.org/ipAddrs": "[\"{{ .Values.config.amfIP }}\"]"     
       labels:
         epc-mode: amf
     spec:    
