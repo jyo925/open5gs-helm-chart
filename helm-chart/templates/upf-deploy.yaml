@@ -8,9 +8,17 @@ spec:
   selector:
     epc-mode: upf
   ports:
-    - protocol: UDP
+   # - protocol: UDP
+     # port: 8805
+     # targetPort: 8805    
+    - name: gtp-u
+      port: 2152
+      protocol: UDP
+      targetPort: 2152
+    - name: pfcp
       port: 8805
-      targetPort: 8805    
+      protocol: UDP
+      targetPort: 8805
 ---  
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
@@ -51,7 +59,12 @@ spec:
             mountPath: /open5gs/config-map/upf.yaml
             subPath: "upf.yaml"
           - mountPath: /dev/net/tun
-            name: dev-net-tun            
+            name: dev-net-tun 
+      nodeAffinity:
+        required:
+          nodeSelectorTerms:
+            - matchExpressions:
+              - {key: kubernetes.io/hostname, operator: In, values: [node01]}           
       volumes:
         - name: {{ .Release.Name }}-upf-config
           configMap:

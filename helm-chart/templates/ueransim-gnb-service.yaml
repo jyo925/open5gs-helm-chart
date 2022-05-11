@@ -12,6 +12,11 @@ spec:
       port: 38412
       targetPort: 38412
       protocol: SCTP
-
+   # - name: gnb-ue 
+     # port: 4997
+     # protocol: UDP
+    - name: gnb-upf #ADD
+      port: 2152
+      protocol: UDP
   selector:
     app: ueransim-gnb

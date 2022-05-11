@@ -51,10 +51,12 @@ metadata:
   labels:
     epc-mode: webui
 spec:
-  type: ClusterIP
+  type: NodePort
+ # type: ClusterIP
   ports:
     - port: 80
       targetPort: 3000
+      nodePort: 30007
   selector:
     epc-mode: webui
 ---
