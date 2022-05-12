@@ -46,7 +46,9 @@ spec:
         "cni.projectcalico.org/ipAddrs": "[\"{{ .Values.config.amfIP }}\"]"     
       labels:
         epc-mode: amf
-    spec:    
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: node01    
       containers:
         - name: amf
           image: "{{ .Values.open5gs.image.repository }}:{{ .Values.open5gs.image.tag }}"
@@ -60,11 +62,6 @@ spec:
           - name: {{ .Release.Name }}-amf-config
             mountPath: /open5gs/config-map/amf.yaml
             subPath: "amf.yaml"
-      nodeAffinity:
-        required:
-          nodeSelectorTerms:
-            - matchExpressions:
-              - {key: kubernetes.io/hostname, operator: In, values: [node01]}
       volumes:
         - name: {{ .Release.Name }}-amf-config
           configMap:

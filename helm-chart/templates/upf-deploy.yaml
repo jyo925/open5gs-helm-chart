@@ -38,7 +38,9 @@ spec:
         "cni.projectcalico.org/ipAddrs": "[\"{{ .Values.config.upfIP }}\"]" 
       labels:
         epc-mode: upf
-    spec:   
+    spec: 
+      nodeSelector:
+        kubernetes.io/hostname: node01  
       containers:
         - name: upf
           image: "{{ .Values.open5gs.image.repository }}:{{ .Values.open5gs.image.tag }}"
@@ -60,11 +62,6 @@ spec:
             subPath: "upf.yaml"
           - mountPath: /dev/net/tun
             name: dev-net-tun 
-      nodeAffinity:
-        required:
-          nodeSelectorTerms:
-            - matchExpressions:
-              - {key: kubernetes.io/hostname, operator: In, values: [node01]}           
       volumes:
         - name: {{ .Release.Name }}-upf-config
           configMap:

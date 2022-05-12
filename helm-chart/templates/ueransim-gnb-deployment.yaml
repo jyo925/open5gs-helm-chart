@@ -17,6 +17,8 @@ spec:
       annotations:
         "cni.projectcalico.org/ipAddrs": "[\"{{ .Values.config.GnbIP }}\"]"      
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: node01
       serviceAccountName: {{ .Release.Name }}-k8s-wait-for
       {{- if .Values.nodeSelector}}
       nodeSelector: {{- .Values.nodeSelector | toYaml | nindent 8 }}
@@ -43,11 +45,6 @@ spec:
         - name: ueransim-gnb-config
           mountPath: /UERANSIM/build/open5gs-gnb.yaml
           subPath: open5gs-gnb.yaml 
-      nodeAffinity:
-        required:
-          nodeSelectorTerms:
-            - matchExpressions:
-              - {key: kubernetes.io/hostname, operator: In, values: [node01]}            
       volumes:
         - name: ueransim-gnb-config
           configMap:
