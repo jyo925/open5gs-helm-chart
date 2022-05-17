@@ -8,9 +8,6 @@ spec:
   selector:
     epc-mode: upf
   ports:
-   # - protocol: UDP
-     # port: 8805
-     # targetPort: 8805    
     - name: gtp-u
       port: 2152
       protocol: UDP
