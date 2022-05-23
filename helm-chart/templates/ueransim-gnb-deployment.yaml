@@ -36,7 +36,7 @@ spec:
         imagePullPolicy: {{ .Values.ueransim.pullPolicy }}        
         command: ["/bin/sh", "-c"]
         args:
-        - sleep 10;
+        - sleep 7;
           apt-get update && apt-get install iputils-ping iproute2 -y;          
           ./nr-gnb -c open5gs-gnb.yaml;
         securityContext:

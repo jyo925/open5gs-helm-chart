@@ -5,9 +5,7 @@
 open5gs:
   image:
     repository: jyo925/jiyoon-open5gs
-   # repository: registry.gitlab.com/infinitydon/registry/open5gs-aio
     pullPolicy: IfNotPresent
-   # tag: "v2.4.5"
     tag: "v.1.2"
 ueransim:
    repository: registry.gitlab.com/infinitydon/registry/ueransim
@@ -63,9 +61,8 @@ config:
   amfIP: "10.233.65.72"
   amfPort: "38412"
   GnbIP: "10.233.65.71" 
- # ueIP: "10.233.64.73" 
-  mcc: 208 # 901 #208
-  mnc: 93 #70  #93
+  mcc: 208 # 901
+  mnc: 93 #70 
   tac: 7
   sd: 1
   sst: 1
