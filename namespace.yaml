@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   creationTimestamp: null
-  name: open5gs
+  name: open5gs-jy
   annotations:
     linkerd.io/inject: enabled
 spec: {}
