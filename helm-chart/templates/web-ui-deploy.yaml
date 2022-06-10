@@ -56,7 +56,7 @@ spec:
   ports:
     - port: 80
       targetPort: 3000
-      nodePort: 30007
+      nodePort: 30008
   selector:
     epc-mode: webui
 ---
