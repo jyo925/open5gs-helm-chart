@@ -8,8 +8,6 @@ data:
   amf.yaml: |
     logger:
         file: /var/log/open5gs/amf.log
-        #level: debug
-        #domain: sbi
 
     amf:
         sbi:
@@ -29,10 +27,6 @@ data:
               mcc: {{ .Values.config.mcc }}
               mnc: {{ .Values.config.mnc }}
             tac: {{ .Values.config.tac }}
-         # - plmn_id:
-          #    mcc: 208
-          #    mnc: 93
-           # tac: 1
         plmn_support:
         - plmn_id:
             mcc: {{ .Values.config.mcc }}
