@@ -57,10 +57,10 @@ webui:
 dnn: internet  
 
 config:
-  upfIP: "10.233.67.70"    
-  amfIP: "10.233.67.72"
+  upfIP: "10.233.68.70"    
+  amfIP: "10.233.68.72"
   amfPort: "38412"
-  GnbIP: "10.233.67.71" 
+  GnbIP: "10.233.68.71" 
   mcc: 208 # 901 #208
   mnc: 93 #70  #93
   tac: 7

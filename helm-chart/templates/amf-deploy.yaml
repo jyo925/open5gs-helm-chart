@@ -48,7 +48,7 @@ spec:
         epc-mode: amf
     spec:
       nodeSelector:
-        kubernetes.io/hostname: node01    
+        kubernetes.io/hostname: node02    
       containers:
         - name: amf
           image: "{{ .Values.open5gs.image.repository }}:{{ .Values.open5gs.image.tag }}"
