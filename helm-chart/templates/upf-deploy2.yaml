@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-upf-svc2
+  labels:
+    epc-mode: upf2
+spec:
+  selector:
+    epc-mode: upf2
+  ports:
+    - name: gtp-u
+      port: 2152
+      protocol: UDP
+      targetPort: 2152
+    - name: pfcp
+      port: 8805
+      protocol: UDP
+      targetPort: 8805
+---  
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-upf-deployment2
+  labels:
+    epc-mode: upf2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      epc-mode: upf2
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: disabled
+        "cni.projectcalico.org/ipAddrs": "[\"{{ .Values.config.upfIP2 }}\"]" 
+      labels:
+        epc-mode: upf2
+    spec: 
+      nodeSelector:
+        kubernetes.io/hostname: node02 
+      containers:
+        - name: upf
+          image: "{{ .Values.open5gs.image.repository }}:{{ .Values.open5gs.image.tag }}"
+          imagePullPolicy: {{ .Values.open5gs.image.pullPolicy }}
+          securityContext:
+            privileged: true
+          command: ["/bin/sh", "-c"]
+          args:
+          - ip tuntap add name ogstun mode tun;
+            ip addr add 10.46.0.1/16 dev ogstun;
+            sysctl -w net.ipv6.conf.all.disable_ipv6=1;
+            ip link set ogstun up;
+            sh -c "echo 1 > /proc/sys/net/ipv4/ip_forward";
+            iptables -t nat -A POSTROUTING -s 10.46.0.0/16 ! -o ogstun -j MASQUERADE;
+            open5gs-upfd -c /open5gs/config-map/upf.yaml;
+          volumeMounts:
+          - name: {{ .Release.Name }}-upf-config2
+            mountPath: /open5gs/config-map/upf.yaml
+            subPath: "upf.yaml"
+          - mountPath: /dev/net/tun
+            name: dev-net-tun 
+      volumes:
+        - name: {{ .Release.Name }}-upf-config2
+          configMap:
+            name: {{ .Release.Name }}-upf-config2
+        - name: dev-net-tun
+          hostPath:
+            path: /dev/net/tun

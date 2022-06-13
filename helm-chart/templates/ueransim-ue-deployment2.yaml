@@ -1,0 +1,48 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}-ue2
+  labels:
+    app: ueransim-ue2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ueransim-ue2
+  template:
+    metadata:
+      labels:
+        mode: simulator
+        app: ueransim-ue2
+      #annotations:
+       # "cni.projectcalico.org/ipAddrs": "[\"{{ .Values.config.ueIP }}\"]"   
+    spec:
+      serviceAccountName: {{ .Release.Name }}-k8s-wait-for    
+      {{- if .Values.nodeSelector}}
+      nodeSelector: {{- .Values.nodeSelector | toYaml | nindent 8 }}
+      {{- end }}
+      initContainers:
+      - name: wait-for-gnb
+        image: "{{ .Values.k8swait.repository }}:{{ .Values.k8swait.tag }}"
+        imagePullPolicy: {{ .Values.k8swait.pullPolicy }}
+        args:
+          - "pod"
+          - "-lapp=ueransim-gnb"   
+      containers:
+      - name: ueransim-ue2
+        image: "{{ .Values.ueransim.repository }}:{{ .Values.ueransim.tag }}"
+        imagePullPolicy: {{ .Values.ueransim.pullPolicy }}        
+        command: ["/bin/sh", "-c"]
+        args:
+        - sleep 10;
+          ./nr-ue -c open5gs-ue.yaml;
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: ueransim-ue-config2
+          mountPath: /UERANSIM/build/open5gs-ue.yaml
+          subPath: open5gs-ue.yaml
+      volumes:
+        - name: ueransim-ue-config2
+          configMap:
+            name: ueransim-config2
