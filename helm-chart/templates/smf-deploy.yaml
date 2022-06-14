@@ -34,7 +34,8 @@ spec:
         imagePullPolicy: {{ .Values.open5gs.image.pullPolicy }}
         command: ["/bin/sh", "-c"]
         args:
-        - open5gs-smfd -c /open5gs/config-map/smf.yaml;
+        - sleep 5;
+          open5gs-smfd -c /open5gs/config-map/smf.yaml;
         volumeMounts:
           - name: {{ .Release.Name }}-smf-config
             mountPath: /open5gs/config-map/smf.yaml

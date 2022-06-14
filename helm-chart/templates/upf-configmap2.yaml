@@ -17,3 +17,8 @@ data:
         subnet:
           - addr: 10.46.0.1/16
             dnn: {{ .Values.dnn }}
+    smf:
+        pfcp:
+          - name: {{ .Release.Name }}-upf-svc2
+            dnn: {{ .Values.dnn }}
+
